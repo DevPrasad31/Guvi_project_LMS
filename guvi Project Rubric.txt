@@ -1,0 +1,684 @@
+#Core Functionalities Implemented
+
+🔐 Authentication System
+
+Verifies account holder’s name before performing sensitive operations like deposit, withdrawal, transfer, etc.
+
+
+
+---
+
+🏦 Account Management
+
+createAccount(): Allows creating new accounts with:
+
+Unique account number
+
+Account holder name
+
+Account type (Savings/Checking)
+
+
+deactivateAccount() & reactivateAccount(): Enable/disable account for security or administrative reasons.
+
+
+
+---
+
+💰 Deposit & Withdrawal
+
+deposit(amount): Adds funds to the balance if account is active and amount is positive.
+
+withdraw(amount): Allows withdrawal if:
+
+Amount ≤ balance + overdraft limit
+
+Account is active
+
+
+
+
+---
+
+🔄 Funds Transfer
+
+transfer(target, amount): Transfers money between two active accounts with transaction log updates.
+
+
+
+---
+
+📈 Interest Calculation
+
+calculateInterest(): Applies 2% annual interest on Savings accounts only.
+
+
+
+---
+
+🧾 Transaction History
+
+printTransactionHistory(): Shows full transaction logs (deposit, withdrawal, transfer, interest).
+
+printFilteredTransactionHistory(String filter): Filters logs based on a keyword (e.g., “deposit”).
+
+
+
+---
+
+🧮 Balance Inquiry
+
+printBalance(): Displays the current balance of the account.
+
+
+
+---
+
+📚 OOP Principles Used
+
+Encapsulation: Private data members with public getters/setters.
+
+Modularity: Separate classes (Account, BankingSystem, and AdvancedBankingSystem).
+
+Reusability: Methods reused across multiple operations (e.g., deposit() is called inside transfer()).
+
+Static Members: INTEREST_RATE defined as a static constant for shared use.
+
+
+
+---
+
+🧰 Other Code Features
+
+Overdraft Support: ₹500 default overdraft is allowed during withdrawal and transfer.
+
+Data Structures:
+
+HashMap<String, Account>: Stores multiple account objects.
+
+ArrayList<String>: Maintains transaction history.
+
+
+Scanner Class: For input from console.
+
+Menu-Driven Interface: User can select operations in a loop until exit.
+
+Error Handling: Basic checks for account existence, activity status, and valid amounts.
+
+
+
+
+# Error Handling & Robustness 
+
+✅ 1. Input Validation
+
+Ensures that only valid values are processed:
+
+Deposit & withdrawal amounts must be greater than 0.
+
+Transfers are allowed only if the source account has sufficient balance (including overdraft).
+
+Interest is applied only to Savings accounts.
+
+
+
+Example:
+
+if (amount > 0 && isActive)
+
+
+---
+
+✅ 2. Account Existence Check
+
+Checks whether the account exists before performing operations like deposit, withdraw, etc.
+
+
+Example:
+
+if (accounts.containsKey(accountNumber))
+
+
+---
+
+✅ 3. Authentication Verification
+
+Confirms the account holder’s name before allowing any critical operations.
+
+
+Example:
+
+if (accounts.get(accountNumber).getAccountHolderName().equals(name))
+
+
+---
+
+✅ 4. Inactive Account Protection
+
+Prevents actions (deposit, withdraw, transfer) on inactive accounts.
+
+
+Example:
+
+if (isActive)
+
+
+---
+
+✅ 5. Overdraft Protection
+
+Allows withdrawal or transfer only within the available balance + overdraft limit.
+
+
+Example:
+
+if (amount <= balance + overdraftLimit)
+
+
+---
+
+✅ 6. Duplicate Account Prevention
+
+Stops the creation of accounts with duplicate account numbers.
+
+
+Example:
+
+if (!accounts.containsKey(accountNumber))
+
+
+---
+
+✅ 7. Safe Scanner Handling
+
+After reading a number, it consumes the newline to prevent input skipping issues.
+
+
+Example:
+
+scanner.nextLine(); // Consume newline
+
+
+---
+
+✅ 8. Invalid Menu Choice Handling
+
+Provides a clear message for invalid menu options.
+
+
+Example:
+
+default:
+    System.out.println("Invalid choice. Please try again.");
+
+
+---
+
+✅ 9. Filter Robustness
+
+Case-insensitive transaction filtering to improve user experience.
+
+
+Example:
+
+if (transaction.toLowerCase().contains(filter.toLowerCase()))
+
+
+---
+
+🔒 Summary of Robustness
+
+Aspect	Implemented?	Description
+
+Input Validation	✅	Validates amount, type, and status before any transaction
+Account Validity Check	✅	Ensures only existing accounts are accessed
+Inactive Account Check	✅	Prevents actions on deactivated accounts
+Authentication	✅	Name-based verification before access
+Exception Handling	⚠️ Partially	Basic validation used; can be extended with try-catch for runtime safety
+Duplicate Prevention	✅	Avoids creation of duplicate account numbers
+
+
+
+
+# Integration of Components 
+
+The system is modular but tightly integrated through class collaboration, data structures, and method delegation. Here's how:
+
+
+---
+
+🧱 1. Classes Integration
+
+✅ Account Class
+
+Encapsulates individual account operations like deposit(), withdraw(), transfer(), and printTransactionHistory().
+
+
+✅ BankingSystem Class
+
+Acts as the controller of the entire system.
+
+Uses a HashMap<String, Account> to manage and access Account objects.
+
+Integrates user input (Scanner) with account operations via method calls.
+
+
+✅ AdvancedBankingSystem (Main class)
+
+Launches the system by creating an instance of BankingSystem and calling run().
+
+
+🔁 Integration Flow Example: AdvancedBankingSystem → BankingSystem.run() → deposit() → Account.deposit()
+
+
+---
+
+🗂️ 2. Data Structure Integration
+
+✅ HashMap<String, Account>
+
+Maps account numbers to Account objects.
+
+Enables fast lookup for operations like:
+
+Balance inquiry
+
+Fund transfer
+
+Withdrawal
+
+Activation/deactivation
+
+
+
+✅ ArrayList<String>
+
+Each Account holds a list of transaction strings.
+
+Integrated into deposit, withdraw, transfer, and interest methods to log activities.
+
+
+
+---
+
+🔐 3. Authentication Integration
+
+BankingSystem.authenticate() method:
+
+Called before every sensitive operation.
+
+Verifies the user's identity before accessing the Account.
+
+
+
+
+---
+
+🔄 4. Method-to-Method Integration
+
+Method in BankingSystem	Integrated With	Purpose
+
+deposit()	authenticate(), Account.deposit()	User verification + deposit handling
+withdraw()	authenticate(), Account.withdraw()	User verification + withdrawal
+transferFunds()	authenticate(), Account.transfer()	Transfer between accounts
+printTransactionHistory()	authenticate(), Account.printTransactionHistory()	Secure transaction history access
+
+
+
+---
+
+🖥️ 5. UI Integration (Menu + Console)
+
+A menu-driven console UI is integrated with:
+
+User input (Scanner)
+
+Control flow (switch-case)
+
+System operations (via BankingSystem methods)
+
+
+
+
+---
+
+✅ Summary Table: Component Integration
+
+Component	Integrated With	Function
+
+Account class	BankingSystem, HashMap	Holds logic; integrated into controller using map
+Scanner	BankingSystem.run()	Gets user input; integrated with all operations
+HashMap	BankingSystem, Account	Stores and retrieves account instances
+ArrayList	Account	Logs transactions and used in history filtering
+Main class	BankingSystem	Starts and integrates the system
+Authentication method	All user operations	Provides secure operation handling
+
+
+
+#Event Handling and Processing 
+
+1. User Input as Events
+
+The program uses a menu-driven interface where user input from the console acts as events triggering different banking operations.
+
+The input choice entered by the user determines which method is executed.
+
+Each menu option corresponds to an event handler method in BankingSystem.
+
+
+Example:
+
+int choice = scanner.nextInt();
+switch (choice) {
+    case 1:
+        createAccount();
+        break;
+    case 2:
+        deposit();
+        break;
+    // and so on...
+}
+
+Here, the choice is the "event" from the user, and the switch processes that event by calling the appropriate method.
+
+
+---
+
+2. Method Calls as Event Handlers
+
+Each banking operation acts as an event handler responding to the user’s input "event":
+
+Event (User Input)	Handler Method	Description
+
+Select "1" (Create Account)	createAccount()	Handles account creation logic
+Select "2" (Deposit)	deposit()	Handles deposit processing
+Select "3" (Withdraw)	withdraw()	Handles withdrawal processing
+Select "4" (Transfer Funds)	transferFunds()	Handles funds transfer between accounts
+Select "5" (Check Balance)	printBalance()	Displays current balance
+...	...	...
+
+
+
+---
+
+3. Input Validation as Event Filtering
+
+Before processing events (like deposit or withdraw), input validation acts as a filter to accept or reject the event.
+
+For example, if the account is inactive or the amount is invalid, the event is rejected with an error message, preventing unwanted processing.
+
+
+
+---
+
+4. Transaction Logging as Event Recording
+
+Each transaction method (deposit(), withdraw(), transfer()) records the event in a transaction history log (ArrayList<String>).
+
+This can be seen as event processing that stores event details for audit and tracking.
+
+
+
+---
+
+5. No Asynchronous or GUI Event Handling
+
+The code is console-based and single-threaded.
+
+There is no asynchronous event handling, GUI event listeners, or callbacks typical in graphical applications.
+
+Events are handled sequentially and synchronously as the user inputs commands.
+
+
+
+---
+
+Summary Table: Event Handling
+
+Event Source	Event Type	Handler Method	Processing/Outcome
+
+User inputs menu choice	Menu selection event	run() method switch-case	Calls corresponding operation method
+User inputs amount	Data input event	deposit(), withdraw(), transferFunds()	Processes transaction or rejects invalid inputs
+Transaction execution	Internal event	Account methods	Updates balance, logs transaction
+Account state change	Internal event	deactivate(), reactivate()	Changes account status
+
+
+
+
+#Data Validation 
+
+1. Validation of Monetary Amounts
+
+Deposit, Withdraw, and Transfer methods in the Account class check that the amount is positive (amount > 0) before processing.
+
+if (amount > 0 && isActive) {
+    // proceed with deposit or withdrawal
+} else {
+    System.out.println("Deposit amount must be positive or account is inactive.");
+}
+
+For withdrawal and transfer, it additionally checks if the amount is within the available balance including overdraft limit:
+
+if (amount > 0 && amount <= balance + overdraftLimit && isActive) {
+    // proceed
+} else {
+    System.out.println("Insufficient balance/overdraft or invalid amount or account is inactive.");
+}
+
+
+
+---
+
+2. Account Existence and Authentication Validation
+
+Before performing any sensitive operation, the code validates:
+
+The account exists in the system (accounts.containsKey(accountNumber)).
+
+The user is authenticated by matching the input name with the stored account holder name.
+
+
+if (accounts.containsKey(accountNumber) && authenticate(accountNumber)) {
+    // perform operation
+} else {
+    System.out.println("Account not found or authentication failed.");
+}
+
+
+
+---
+
+3. Account Status Validation
+
+Operations like deposit, withdraw, transfer are only allowed if the account is active (isActive == true).
+
+If an account is deactivated, operations will be blocked.
+
+
+
+---
+
+4. Account Number Uniqueness
+
+When creating a new account, it validates that the account number does not already exist in the system:
+
+if (!accounts.containsKey(accountNumber)) {
+    // create account
+} else {
+    System.out.println("Account number already exists.");
+}
+
+
+
+---
+
+5. Basic Input Validation
+
+The menu system validates the user's menu choice to make sure it’s within valid options (1-11).
+
+Invalid inputs prompt a message: "Invalid choice. Please try again."
+
+
+
+---
+
+Summary Table: Key Validation Points
+
+Data/Action	Validation Performed	Effect if Validation Fails
+
+Deposit/Withdraw Amount	Amount must be positive and ≤ available balance + overdraft	Transaction rejected with error message
+Account Existence	Account number must be present in accounts map	Operation denied, "Account not found."
+Authentication	Account holder name must match for given account	Operation denied, "Authentication failed."
+Account Status	Account must be active	Operations blocked if inactive
+Account Number	Must be unique on account creation	Account creation denied if duplicate
+Menu Choice	Must be valid menu option (1-11)	Prompts "Invalid choice" message
+
+
+
+---
+
+If you want, I can suggest additional validation improvements, like:
+
+Format checks on account numbers
+
+Minimum deposit/withdrawal amounts
+
+Stronger authentication (e.g., PIN/password)
+
+Exception handling for invalid numeric inputs
+
+
+
+#Code Quality
+
+1. Clear and Consistent Naming Conventions
+
+Class, method, and variable names are descriptive and follow Java naming conventions (e.g., Account, deposit(), accountHolderName).
+
+This improves readability and maintainability.
+
+
+2. Encapsulation and Access Modifiers
+
+Use of private fields in the Account class encapsulates data, exposing only needed information via public getters/setters or methods.
+
+Limits direct access to sensitive fields like balance.
+
+
+3. Single Responsibility Principle
+
+Each method has a clear, focused responsibility:
+
+deposit() handles deposits.
+
+withdraw() handles withdrawals.
+
+transfer() manages fund transfers.
+
+
+The BankingSystem class manages user interactions and account management separately from account data logic.
+
+
+4. Use of Collections
+
+Uses Java Collections Framework (Map, List) effectively to store accounts and transaction history.
+
+Facilitates dynamic and scalable data management.
+
+
+5. Reusability and Modularity
+
+Modular methods can be reused within the class and between classes (transfer() calls deposit() on the target account).
+
+Easy to extend or modify specific operations.
+
+
+6. Input Handling
+
+Scanner input handling uses nextLine() carefully with nextDouble() to avoid input skipping issues.
+
+The menu loop cleanly handles continuous user interaction.
+
+
+7. Transaction Logging
+
+Maintains a detailed transaction history for auditing, which is a good practice.
+
+
+
+---
+
+🚀 Innovative Features
+
+1. Overdraft Facility
+
+Supports an overdraft limit on accounts, allowing withdrawals beyond current balance up to a limit.
+
+Adds realism and flexibility to banking operations.
+
+
+2. Interest Calculation
+
+Automatically calculates and credits interest for savings accounts.
+
+Demonstrates basic financial computations integrated into the system.
+
+
+3. Account Activation Status
+
+Allows accounts to be deactivated/reactivated, preventing transactions on inactive accounts.
+
+Useful for fraud prevention or user requests.
+
+
+4. Authentication Layer
+
+Simple but effective authentication by verifying account holder name before sensitive operations.
+
+Adds security in the absence of a full login system.
+
+
+5. Filtered Transaction History
+
+Provides filtered views of transaction logs by keyword (e.g., deposits only, withdrawals only).
+
+Improves usability for users tracking specific transactions.
+
+
+6. Menu-Driven Interface
+
+Console-based, interactive menu enables users to access all banking features in one place.
+
+Facilitates user-friendly navigation without GUI complexity.
+
+
+
+---
+
+Optional Enhancements You Could Add (Innovative Ideas)
+
+Multi-factor authentication (PIN or password protection)
+
+Persistent storage (file or database) for accounts and transaction history
+
+Notification system (email or SMS simulation)
+
+Detailed transaction types (fees, penalties, etc.)
+
+GUI interface for richer event handling
+
+Multi-currency support and exchange rates
+
+Interest calculation over time (compound interest, monthly, yearly)
+
+
+
+
+
+
+
+
+
+
+
+
