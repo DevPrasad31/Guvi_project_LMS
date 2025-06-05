@@ -1,0 +1,195 @@
+#Advanced Banking System Project Documentation
+
+
+---
+
+1. Project Overview
+
+Project Name: Advanced Banking System
+
+Description:
+This is a console-based Java application simulating a basic banking system with core functionalities such as account creation, deposit, withdrawal, fund transfer, balance inquiry, interest calculation, and transaction history management. It includes features like overdraft protection, account activation status, and basic authentication.
+
+
+---
+
+2. Features
+
+Account Management:
+
+Create new accounts (Savings or Checking).
+
+Deactivate/reactivate accounts.
+
+
+Transactions:
+
+Deposit funds into accounts.
+
+Withdraw funds with overdraft facility.
+
+Transfer funds between accounts.
+
+
+Balance Inquiry:
+
+Check current account balance.
+
+
+Interest:
+
+Calculate and credit interest for savings accounts.
+
+
+Transaction History:
+
+Print full transaction history.
+
+Filter transaction history by keywords (Deposit, Withdraw, Transfer).
+
+
+Security:
+
+Simple authentication by verifying account holder name before sensitive operations.
+
+
+
+
+---
+
+3. Technologies Used
+
+Programming Language: Java (JDK 8 or above recommended)
+
+Java Collections: HashMap, ArrayList
+
+Input Handling: Scanner class for console input
+
+
+
+---
+
+4. Class Diagram and Architecture
+
+Classes:
+
+Account
+
+Represents a bank account with attributes: accountNumber, accountHolderName, balance, accountType, isActive, overdraftLimit, transactionHistory.
+
+Methods: deposit, withdraw, transfer, calculateInterest, printTransactionHistory, deactivate/reactivate, etc.
+
+
+BankingSystem
+
+Manages collection of accounts.
+
+Handles user interaction via console menu.
+
+Responsible for authentication and coordinating transactions.
+
+
+AdvancedBankingSystem (Main class)
+
+Entry point; initializes and runs the banking system.
+
+
+
+
+---
+
+5. Key Methods Explanation
+
+Method	Description
+
+createAccount()	Takes user input to create new accounts with unique numbers.
+deposit(double amount)	Adds amount to balance if positive and account active.
+withdraw(double amount)	Deducts amount from balance respecting overdraft limit.
+transfer(Account target, double amount)	Transfers funds between accounts with validation.
+calculateInterest()	Adds interest to savings accounts based on fixed rate.
+printTransactionHistory()	Prints all transactions of the account.
+printFilteredTransactionHistory(String filter)	Prints filtered transactions by keyword.
+authenticate(String accountNumber)	Confirms user identity by matching account holder name.
+
+
+
+---
+
+6. How to Run
+
+1. Compile the program:
+
+
+
+javac AdvancedBankingSystem.java
+
+2. Run the program:
+
+
+
+java AdvancedBankingSystem
+
+3. Follow on-screen menu instructions to interact with the banking system.
+
+
+
+
+---
+
+7. Assumptions and Limitations
+
+Account numbers are unique string identifiers.
+
+Authentication is done via matching account holder's name; no passwords or PINs are implemented.
+
+Overdraft limit is fixed at 500.0 by default for all accounts.
+
+Interest rate is fixed at 2% annually for savings accounts.
+
+No persistent storage: all data is lost when the program terminates.
+
+Input is assumed to be valid; minimal input format validation.
+
+No concurrency or multi-threading support.
+
+
+
+---
+
+8. Potential Improvements
+
+Add persistent storage (database or file-based).
+
+Enhance authentication with passwords or PIN.
+
+Implement GUI for improved user experience.
+
+Add multi-currency support.
+
+Add monthly or compound interest calculations.
+
+Implement exception handling and input validation.
+
+Add audit logs and admin roles.
+
+
+
+---
+
+9. Code Structure Snapshot
+
+src/
+├── AdvancedBankingSystem.java  (Main program)
+└── Account.java                (Account class)
+└── BankingSystem.java          (Handles banking logic and user interaction)
+
+
+---
+
+10. Contact / Author
+
+Author: [Dev Prasad]
+GitHub: [DevPrasad31]
+
+
+---
