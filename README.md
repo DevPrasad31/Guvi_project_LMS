@@ -97,9 +97,5 @@ Monthly statement generation
 
 Feel free to fork this repo and submit a pull request for improvements!
 
-🪪 License
-
-This project is licensed under the MIT 
-
-Developed by [Dev Prasad]
+ Developed by [Dev Prasad]
 
